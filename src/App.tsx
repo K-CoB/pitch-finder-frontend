@@ -14,6 +14,9 @@ function App() {
   const [started, setStart] = useState(false);
 
   const [curNote, setCurNote] = useState<number>();
+  const [prevNote, setPrevNote] = useState<number>();
+  const [curNoteDuration, setCurNoteDuration] = useState<number>(0);
+
   const [pitchNote, setPitchNote] = useState<string>();
   const [pitchScale, setPitchScale] = useState<number>();
   const [pitch, setPitch] = useState("0 Hz");
@@ -23,22 +26,33 @@ function App() {
     analyser.getFloatTimeDomainData(buf);
     var ac = correlate(buf, audioCtx.sampleRate);
     if (ac > -1) {
-      console.log(ac);
       const note = getNoteFromFrequency(ac);
+      console.log(note);
       setPitch(ac.toFixed(2) + " Hz");
       setCurNote(note);
+
+      const { scale, noteString } = getPitchFromNote(note);
+      setPitchNote(noteString);
+      setPitchScale(scale);
     }
   };
 
   useEffect(() => {
     if (curNote) {
-      const { scale, noteString } = getPitchFromNote(curNote);
-      setPitchNote(noteString);
-      setPitchScale(scale);
+      if (prevNote === curNote) {
+        setCurNoteDuration((prev) => prev + 1);
+      } else {
+        setPrevNote(curNote);
+        setCurNoteDuration(0);
+      }
 
-      const updatedNoteSuccess = [...noteSuccess];
-      updatedNoteSuccess[curNote - 24] = true;
-      setNoteSuccess(updatedNoteSuccess);
+      if (curNoteDuration > 3) {
+        const index = curNote - 24;
+        if (index < 0 || index > 88) return;
+        const updatedNoteSuccess = [...noteSuccess];
+        updatedNoteSuccess[index] = true;
+        setNoteSuccess(updatedNoteSuccess);
+      }
     }
   }, [curNote]);
 
