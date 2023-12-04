@@ -14,7 +14,6 @@ function App() {
   const [started, setStart] = useState(false);
 
   const [curNote, setCurNote] = useState<number>();
-  const [prevNote, setPrevNote] = useState<number>();
   const [curNoteDuration, setCurNoteDuration] = useState<number>(0);
 
   const [pitchNote, setPitchNote] = useState<string>();
@@ -27,8 +26,16 @@ function App() {
     var ac = correlate(buf, audioCtx.sampleRate);
     if (ac > -1) {
       const note = getNoteFromFrequency(ac);
-      console.log(note);
       setPitch(ac.toFixed(2) + " Hz");
+
+      console.log(note);
+      if (curNote === note) {
+        console.log("같음");
+        setCurNoteDuration((prev) => prev + 1);
+        return;
+      }
+
+      setCurNoteDuration(0);
       setCurNote(note);
 
       const { scale, noteString } = getPitchFromNote(note);
@@ -39,14 +46,7 @@ function App() {
 
   useEffect(() => {
     if (curNote) {
-      if (prevNote === curNote) {
-        setCurNoteDuration((prev) => prev + 1);
-      } else {
-        setPrevNote(curNote);
-        setCurNoteDuration(0);
-      }
-
-      if (curNoteDuration > 3) {
+      if (curNoteDuration > 1) {
         const index = curNote - 24;
         if (index < 0 || index > 88) return;
         const updatedNoteSuccess = [...noteSuccess];
@@ -94,6 +94,9 @@ function App() {
           <span>{pitchScale}</span>
           <div>
             <span>{pitch}</span>
+          </div>
+          <div>
+            <span>{curNoteDuration}</span>
           </div>
         </div>
         {!started ? (
