@@ -4,12 +4,21 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
 }
 .view {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     max-width: 440px;
     border-radius: 10px;
     border: 1px solid gray;
     padding: 1rem;
+}
+.body {
+    display: flex;
+    flex: 1;
 }
 
 .note-list {

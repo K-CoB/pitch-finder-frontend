@@ -107,6 +107,11 @@ export default function Audio() {
           );
         })}
       </div>
+      {noteSuccess !== InitialNoteSuccess && (
+        <a href="/music">
+          <button>내 음역대에 맞는 음악 찾기</button>
+        </a>
+      )}
     </div>
   );
 }
