@@ -13,9 +13,6 @@ function App() {
   const [source, setSource] = useState<MediaStreamAudioSourceNode>();
   const [started, setStart] = useState(false);
 
-  const [curNote, setCurNote] = useState<number>();
-  const [curNoteDuration, setCurNoteDuration] = useState<number>(0);
-
   const [pitchNote, setPitchNote] = useState<string>();
   const [pitchScale, setPitchScale] = useState<number>();
   const [pitch, setPitch] = useState<number>(0);
@@ -30,28 +27,18 @@ function App() {
     setPitch(ac);
 
     const note = getNoteFromFrequency(ac);
-    if (curNote === note) {
-      setCurNoteDuration((prev) => prev + 1);
-      return;
-    }
-
-    setCurNoteDuration(0);
-    setCurNote(note);
-
     const { scale, noteString } = getPitchFromNote(note);
+    console.log(note);
+
     setPitchNote(noteString);
     setPitchScale(scale);
-  };
 
-  useEffect(() => {
-    if (curNote && curNoteDuration > 1) {
-      const index = curNote - 24;
-      if (index < 0 || index > 88) return;
-      const updatedNoteSuccess = [...noteSuccess];
-      updatedNoteSuccess[index] = true;
-      setNoteSuccess(updatedNoteSuccess);
-    }
-  }, [curNoteDuration]);
+    const index = note - 24;
+    if (index < 0 || index > 88) return;
+    const updatedNoteSuccess = [...noteSuccess];
+    updatedNoteSuccess[index] = true;
+    setNoteSuccess(updatedNoteSuccess);
+  };
 
   useEffect(() => {
     if (source != null) {
@@ -93,9 +80,6 @@ function App() {
           </span>
           <div>
             <span>주파수 : {pitch.toFixed(2)} HZ</span>
-          </div>
-          <div>
-            <span>지속시간 : {curNoteDuration}ms</span>
           </div>
         </div>
         {!started ? (
