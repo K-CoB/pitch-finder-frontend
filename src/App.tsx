@@ -1,47 +1,46 @@
+import "./App.css";
+
 import { useEffect, useState } from "react";
 import AudioContext from "./audio/context";
-import { noteFromPitch } from "./audio/utils";
+import { getNoteFromFrequency, getPitchFromNote } from "./audio/utils";
 import correlate from "./audio/correlate";
 
 const audioCtx = AudioContext.getAudioContext();
 const analyser = AudioContext.getAnalyser();
 const buf = new Float32Array(2048);
 
-const noteStrings = [
-  "도",
-  "도#",
-  "레",
-  "레#",
-  "미",
-  "파",
-  "파#",
-  "솔",
-  "솔#",
-  "라",
-  "라#",
-  "시",
-];
-
 function App() {
   const [source, setSource] = useState<MediaStreamAudioSourceNode>();
   const [started, setStart] = useState(false);
 
+  const [curNote, setCurNote] = useState<number>();
   const [pitchNote, setPitchNote] = useState<string>();
   const [pitchScale, setPitchScale] = useState<number>();
   const [pitch, setPitch] = useState("0 Hz");
+  const [noteSuccess, setNoteSuccess] = useState(Array(64).fill(false));
 
   const updatePitch = () => {
     analyser.getFloatTimeDomainData(buf);
     var ac = correlate(buf, audioCtx.sampleRate);
     if (ac > -1) {
-      let note = noteFromPitch(ac);
-      let sym = noteStrings[note % 12];
-      let scl = Math.floor(note / 12) - 1;
+      console.log(ac);
+      const note = getNoteFromFrequency(ac);
       setPitch(ac.toFixed(2) + " Hz");
-      setPitchNote(sym);
-      setPitchScale(scl);
+      setCurNote(note);
     }
   };
+
+  useEffect(() => {
+    if (curNote) {
+      const { scale, noteString } = getPitchFromNote(curNote);
+      setPitchNote(noteString);
+      setPitchScale(scale);
+
+      const updatedNoteSuccess = [...noteSuccess];
+      updatedNoteSuccess[curNote - 24] = true;
+      setNoteSuccess(updatedNoteSuccess);
+    }
+  }, [curNote]);
 
   useEffect(() => {
     if (source != null) {
@@ -88,6 +87,16 @@ function App() {
         ) : (
           <button onClick={stop}>정지</button>
         )}
+      </div>
+      <div className="note-list">
+        {noteSuccess.map((item, idx) => {
+          const { scale, noteString } = getPitchFromNote(idx + 24);
+          return (
+            <h5 key={idx} className={item ? "success" : "false"}>
+              {noteString + scale}
+            </h5>
+          );
+        })}
       </div>
     </div>
   );

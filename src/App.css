@@ -1,0 +1,13 @@
+.note-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.note-list > .success {
+    color: blue;
+}
+
+.note-list > .false {
+    color: red;
+}
