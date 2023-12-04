@@ -18,43 +18,40 @@ function App() {
 
   const [pitchNote, setPitchNote] = useState<string>();
   const [pitchScale, setPitchScale] = useState<number>();
-  const [pitch, setPitch] = useState("0 Hz");
+  const [pitch, setPitch] = useState<number>(0);
   const [noteSuccess, setNoteSuccess] = useState(Array(64).fill(false));
 
   const updatePitch = () => {
     analyser.getFloatTimeDomainData(buf);
     var ac = correlate(buf, audioCtx.sampleRate);
-    if (ac > -1) {
-      const note = getNoteFromFrequency(ac);
-      setPitch(ac.toFixed(2) + " Hz");
 
-      console.log(note);
-      if (curNote === note) {
-        console.log("같음");
-        setCurNoteDuration((prev) => prev + 1);
-        return;
-      }
+    if (ac < 0) return;
 
-      setCurNoteDuration(0);
-      setCurNote(note);
+    setPitch(ac);
 
-      const { scale, noteString } = getPitchFromNote(note);
-      setPitchNote(noteString);
-      setPitchScale(scale);
+    const note = getNoteFromFrequency(ac);
+    if (curNote === note) {
+      setCurNoteDuration((prev) => prev + 1);
+      return;
     }
+
+    setCurNoteDuration(0);
+    setCurNote(note);
+
+    const { scale, noteString } = getPitchFromNote(note);
+    setPitchNote(noteString);
+    setPitchScale(scale);
   };
 
   useEffect(() => {
-    if (curNote) {
-      if (curNoteDuration > 1) {
-        const index = curNote - 24;
-        if (index < 0 || index > 88) return;
-        const updatedNoteSuccess = [...noteSuccess];
-        updatedNoteSuccess[index] = true;
-        setNoteSuccess(updatedNoteSuccess);
-      }
+    if (curNote && curNoteDuration > 0) {
+      const index = curNote - 24;
+      if (index < 0 || index > 88) return;
+      const updatedNoteSuccess = [...noteSuccess];
+      updatedNoteSuccess[index] = true;
+      setNoteSuccess(updatedNoteSuccess);
     }
-  }, [curNote]);
+  }, [curNoteDuration]);
 
   useEffect(() => {
     if (source != null) {
@@ -90,13 +87,15 @@ function App() {
     <div>
       <div>
         <div>
-          <span>{pitchNote}</span>
-          <span>{pitchScale}</span>
+          <span>
+            음정: {pitchNote}
+            {pitchScale}
+          </span>
           <div>
-            <span>{pitch}</span>
+            <span>주파수 : {pitch.toFixed(2)} HZ</span>
           </div>
           <div>
-            <span>{curNoteDuration}</span>
+            <span>지속시간 : {curNoteDuration}ms</span>
           </div>
         </div>
         {!started ? (
