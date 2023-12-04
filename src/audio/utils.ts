@@ -3,12 +3,4 @@ const noteFromPitch = (frequency: number) => {
   return Math.round(noteNum) + 69;
 };
 
-const getDetunePercent = (detune: number) => {
-  if (detune > 0) {
-    return 50 + detune;
-  } else {
-    return 50 + -detune;
-  }
-};
-
-export { noteFromPitch, getDetunePercent };
+export { noteFromPitch };

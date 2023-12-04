@@ -40,7 +40,6 @@ function App() {
       setPitch(ac.toFixed(2) + " Hz");
       setPitchNote(sym);
       setPitchScale(scl);
-      // console.log(note, sym, scl, dtune, ac);
     }
   };
 
