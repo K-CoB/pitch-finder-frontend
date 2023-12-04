@@ -44,7 +44,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (curNote && curNoteDuration > 0) {
+    if (curNote && curNoteDuration > 1) {
       const index = curNote - 24;
       if (index < 0 || index > 88) return;
       const updatedNoteSuccess = [...noteSuccess];
