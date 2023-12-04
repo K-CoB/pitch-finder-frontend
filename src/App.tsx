@@ -9,14 +9,17 @@ const audioCtx = AudioContext.getAudioContext();
 const analyser = AudioContext.getAnalyser();
 const buf = new Float32Array(2048);
 
+const InitialNoteSuccess = Array(64).fill(false);
+
 function App() {
   const [source, setSource] = useState<MediaStreamAudioSourceNode>();
   const [started, setStart] = useState(false);
 
+  const [curNote, setCurNote] = useState<number>(0);
   const [pitchNote, setPitchNote] = useState<string>();
   const [pitchScale, setPitchScale] = useState<number>();
   const [pitch, setPitch] = useState<number>(0);
-  const [noteSuccess, setNoteSuccess] = useState(Array(64).fill(false));
+  const [noteSuccess, setNoteSuccess] = useState(InitialNoteSuccess);
 
   const updatePitch = () => {
     analyser.getFloatTimeDomainData(buf);
@@ -27,18 +30,21 @@ function App() {
     setPitch(ac);
 
     const note = getNoteFromFrequency(ac);
-    const { scale, noteString } = getPitchFromNote(note);
-    console.log(note);
+    setCurNote(note);
+  };
+
+  useEffect(() => {
+    const { scale, noteString } = getPitchFromNote(curNote);
 
     setPitchNote(noteString);
     setPitchScale(scale);
 
-    const index = note - 24;
+    const index = curNote - 24;
     if (index < 0 || index > 88) return;
     const updatedNoteSuccess = [...noteSuccess];
     updatedNoteSuccess[index] = true;
     setNoteSuccess(updatedNoteSuccess);
-  };
+  }, [curNote]);
 
   useEffect(() => {
     if (source != null) {
@@ -67,6 +73,7 @@ function App() {
 
   const stop = () => {
     source?.disconnect(analyser);
+    setNoteSuccess(InitialNoteSuccess);
     setStart(false);
   };
 
