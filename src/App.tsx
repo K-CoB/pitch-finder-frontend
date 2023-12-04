@@ -73,8 +73,11 @@ function App() {
 
   const stop = () => {
     source?.disconnect(analyser);
-    setNoteSuccess(InitialNoteSuccess);
     setStart(false);
+  };
+
+  const reset = () => {
+    setNoteSuccess(InitialNoteSuccess);
   };
 
   return (
@@ -92,8 +95,9 @@ function App() {
         {!started ? (
           <button onClick={start}>음역대 테스트 시작</button>
         ) : (
-          <button onClick={stop}>정지</button>
+          <button onClick={stop}>음역대 테스트 정지</button>
         )}
+        {source && <button onClick={reset}>초기화</button>}
       </div>
       <div className="note-list">
         {noteSuccess.map((item, idx) => {
