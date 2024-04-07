@@ -41,8 +41,8 @@ export default function Audio() {
 
   useEffect(() => {
     if (value.note === target) {
-      alert("성공");
       getNextTarget(true);
+      alert("성공");
     }
   }, [value.note]);
 
@@ -52,10 +52,10 @@ export default function Audio() {
   const [begin, setBegin] = useState(MIDDLE);
   const [end, setEnd] = useState(HIGHEST);
 
-  function listenTarget() {
-    playSound(target);
+  function listenSound(note: number) {
+    playSound(note);
     method.stop();
-    setTimeout(() => method.start(), 3000);
+    setTimeout(() => method.start(), 500);
   }
 
   function getNextTarget(success: boolean) {
@@ -118,7 +118,7 @@ export default function Audio() {
           <h1>{getPitchFromNote(target).pitch}</h1>
           {stage !== "complete" && (
             <>
-              <button onClick={() => listenTarget()}>음성 듣기</button>
+              <button onClick={() => listenSound(target)}>음성 듣기</button>
               <button
                 onClick={() => {
                   getNextTarget(false);
@@ -145,25 +145,20 @@ export default function Audio() {
               <span>주파수 : {value.hz.toFixed(2)} HZ</span>
             </div>
           </div>
-          {highest && <h2>최고음정 : {getPitchFromNote(highest).pitch}</h2>}
-          {lowest && <h2>최저음정 : {getPitchFromNote(lowest).pitch}</h2>}
+          {highest && (
+            <h2>
+              최고음정 : {getPitchFromNote(highest).pitch}{" "}
+              <button onClick={() => listenSound(highest)}>듣기</button>
+            </h2>
+          )}
+          {lowest && (
+            <h2>
+              최고음정 : {getPitchFromNote(lowest).pitch}{" "}
+              <button onClick={() => listenSound(lowest)}>듣기</button>
+            </h2>
+          )}
         </div>
       )}
-      {/* <div className="note-list">
-        {noteSuccess.map((item, idx) => {
-          const { scale, noteString } = getPitchFromNote(idx + 24);
-          return (
-            <h5 key={idx} className={item ? "success" : "false"}>
-              {noteString + scale}
-            </h5>
-          );
-        })}
-      </div> */}
-      {/* {noteSuccess !== InitialNoteSuccess && (
-        <a href="/music">
-          <button>내 음역대에 맞는 음악 찾기</button>
-        </a>
-      )} */}
     </div>
   );
 }
