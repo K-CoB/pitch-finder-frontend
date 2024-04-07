@@ -14,8 +14,11 @@ const noteStrings = [
 ];
 
 export const getNoteFromFrequency = (frequency: number) => {
-  var noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
-  return Math.round(noteNum) + 69;
+  return Math.round(12 * Math.log2(frequency / 440) + 69);
+};
+
+export const getFrequencyFromNote = (note: number) => {
+  return 440 * Math.pow(2, (note - 69) / 12);
 };
 
 export const getPitchFromNote = (note: number) => {

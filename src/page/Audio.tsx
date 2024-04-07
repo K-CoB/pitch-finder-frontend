@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import useAudio from "../hooks/useAudio";
 import styled from "styled-components";
-import { getPitchFromNote } from "../audio/utils";
+import { getFrequencyFromNote, getPitchFromNote } from "../audio/utils";
 
 const HIGHEST = 88;
 const LOWEST = 24;
@@ -49,6 +49,10 @@ export default function Audio() {
   const [target, setTarget] = useState(MIDDLE);
   const [begin, setBegin] = useState(MIDDLE);
   const [end, setEnd] = useState(HIGHEST);
+
+  function listenTarget() {
+    return method.playSound(target);
+  }
 
   function getNextTarget(success: boolean) {
     let next;
@@ -117,12 +121,15 @@ export default function Audio() {
         </h5>
         <h1>{getPitchFromNote(target).pitch}</h1>
         {stage !== "complete" && (
-          <button
-            onClick={() => {
-              getNextTarget(false);
-            }}>
-            실패
-          </button>
+          <>
+            <button onClick={() => listenTarget()}>음성 듣기</button>
+            <button
+              onClick={() => {
+                getNextTarget(false);
+              }}>
+              실패
+            </button>
+          </>
         )}
         <PitchBar
           cur={getLengthPercent(value.note)}
