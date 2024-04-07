@@ -22,13 +22,6 @@ export default function useAudio() {
     setNote(getNoteFromFrequency(hz));
   };
 
-  //   useEffect(() => {
-  //     const { scale, noteString } = getPitchFromNote(curNote);
-
-  //     setPitchNote(noteString);
-  //     setPitchScale(scale);
-  //   }, [curNote]);
-
   useEffect(() => {
     if (source != null) {
       source.connect(analyser);
