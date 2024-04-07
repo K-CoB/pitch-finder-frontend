@@ -22,5 +22,5 @@ export const getPitchFromNote = (note: number) => {
   const noteString = noteStrings[note % 12];
   const scale = Math.floor(note / 12) - 1;
 
-  return { scale, noteString };
+  return { scale, noteString, pitch: noteString + scale };
 };
