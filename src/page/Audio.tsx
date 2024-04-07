@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 
 import useAudio from "../hooks/useAudio";
 import styled from "styled-components";
-import { getFrequencyFromNote, getPitchFromNote } from "../audio/utils";
+import { getPitchFromNote } from "../audio/utils";
+import playSound from "../audio/playSound";
 
-const HIGHEST = 88;
-const LOWEST = 24;
-const MIDDLE = (HIGHEST + LOWEST) / 2;
+const HIGHEST = 73;
+const LOWEST = 38;
+const MIDDLE = Math.floor((HIGHEST + LOWEST) / 2);
 
 function getLengthPercent(value: number) {
   return ((value - LOWEST) / (HIGHEST - LOWEST)) * 100;
@@ -47,11 +48,14 @@ export default function Audio() {
 
   const [stage, setStage] = useState<"up" | "down" | "complete">("up");
   const [target, setTarget] = useState(MIDDLE);
+  console.log("🚀 ~ Audio ~ target:", target);
   const [begin, setBegin] = useState(MIDDLE);
   const [end, setEnd] = useState(HIGHEST);
 
   function listenTarget() {
-    return method.playSound(target);
+    playSound(target);
+    method.stop();
+    setTimeout(() => method.start(), 3000);
   }
 
   function getNextTarget(success: boolean) {
@@ -85,15 +89,6 @@ export default function Audio() {
   return (
     <div>
       <div>
-        <div>
-          <span>
-            음정: {value.pitch.noteString}
-            {value.pitch.scale}
-          </span>
-          <div>
-            <span>주파수 : {value.hz.toFixed(2)} HZ</span>
-          </div>
-        </div>
         {!started ? (
           <button
             onClick={() => {
@@ -112,37 +107,48 @@ export default function Audio() {
           </button>
         )}
       </div>
-      <div>
-        <h5>
-          {stage === "up"
-            ? "최고 음정을 구해보겠습니다 "
-            : "최저 음정을 구해보겠습니다 "}
-          아래 음정을 따라해주세요
-        </h5>
-        <h1>{getPitchFromNote(target).pitch}</h1>
-        {stage !== "complete" && (
-          <>
-            <button onClick={() => listenTarget()}>음성 듣기</button>
-            <button
-              onClick={() => {
-                getNextTarget(false);
-              }}>
-              실패
-            </button>
-          </>
-        )}
-        <PitchBar
-          cur={getLengthPercent(value.note)}
-          target={getLengthPercent(target)}>
-          <div className="total" />
-          <span>목표 음정</span>
-          <div className="target" />
-          <span>현재 음정</span>
-          <div className="cur" />
-        </PitchBar>
-        <h2>최고음정 : {highest}</h2>
-        <h2>최저음정 : {lowest}</h2>
-      </div>
+      {started && (
+        <div>
+          <h5>
+            {stage === "up"
+              ? "최고 음정을 구해보겠습니다 "
+              : "최저 음정을 구해보겠습니다 "}
+            아래 음정을 따라해주세요
+          </h5>
+          <h1>{getPitchFromNote(target).pitch}</h1>
+          {stage !== "complete" && (
+            <>
+              <button onClick={() => listenTarget()}>음성 듣기</button>
+              <button
+                onClick={() => {
+                  getNextTarget(false);
+                }}>
+                실패
+              </button>
+            </>
+          )}
+          <PitchBar
+            cur={getLengthPercent(value.note)}
+            target={getLengthPercent(target)}>
+            <div className="total" />
+            <span>목표 음정</span>
+            <div className="target" />
+            <span>현재 음정</span>
+            <div className="cur" />
+          </PitchBar>
+          <div>
+            <span>
+              음정: {value.pitch.noteString}
+              {value.pitch.scale}
+            </span>
+            <div>
+              <span>주파수 : {value.hz.toFixed(2)} HZ</span>
+            </div>
+          </div>
+          {highest && <h2>최고음정 : {getPitchFromNote(highest).pitch}</h2>}
+          {lowest && <h2>최저음정 : {getPitchFromNote(lowest).pitch}</h2>}
+        </div>
+      )}
       {/* <div className="note-list">
         {noteSuccess.map((item, idx) => {
           const { scale, noteString } = getPitchFromNote(idx + 24);
