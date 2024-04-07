@@ -19,6 +19,13 @@ export default function Music() {
         <li>최고 음정 : {searchParams.get("high")}</li>
         <li>최저 음정 : {searchParams.get("low")}</li>
       </ul>
+      <div>
+        {musicList.map((music, idx) => (
+          <li key={idx}>
+            {music.singer} <b>{music.title}</b>
+          </li>
+        ))}
+      </div>
     </div>
   );
 }
