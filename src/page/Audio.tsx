@@ -1,11 +1,34 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import useAudio from "../hooks/useAudio";
-import { getPitchFromNote } from "../audio/utils";
+import styled from "styled-components";
 
-const SIZE = 64;
-const INITIAL = 24;
-const InitialNoteSuccess = Array(SIZE).fill(false);
+const HIGHEST = 88;
+const LOWEST = 24;
+const MIDDLE = (HIGHEST + LOWEST) / 2;
+
+function getLengthPercent(value: number) {
+  return ((value - LOWEST) / (HIGHEST - LOWEST)) * 100;
+}
+
+const PitchBar = styled.div<{ cur: number; target: number }>`
+  & > * {
+    height: 20px;
+  }
+
+  .total {
+    background-color: black;
+    width: 100%;
+  }
+  .cur {
+    background-color: red;
+    width: ${(props) => props.cur}%;
+  }
+  .target {
+    background-color: blue;
+    width: ${(props) => props.target}%;
+  }
+`;
 
 export default function Audio() {
   const { method, value } = useAudio();
@@ -15,9 +38,9 @@ export default function Audio() {
   const [lowest, setLowest] = useState<number>();
 
   const [stage, setStage] = useState<"up" | "down" | "complete">("up");
-  const [target, setTarget] = useState(50);
-  const [begin, setBegin] = useState(50);
-  const [end, setEnd] = useState(100);
+  const [target, setTarget] = useState(MIDDLE);
+  const [begin, setBegin] = useState(MIDDLE);
+  const [end, setEnd] = useState(HIGHEST);
 
   function getNextTarget(success: boolean) {
     let next;
@@ -35,11 +58,12 @@ export default function Audio() {
       if (stage === "up") {
         setHighest(result);
         setStage("down");
-        setTarget(50);
-        setBegin(50);
-        setEnd(0);
+        setTarget(MIDDLE);
+        setBegin(MIDDLE);
+        setEnd(LOWEST);
       } else if (stage === "down") {
         setLowest(result);
+        setStage("complete");
       }
       return;
     }
@@ -76,28 +100,39 @@ export default function Audio() {
           </button>
         )}
       </div>
+      <PitchBar
+        cur={getLengthPercent(value.note)}
+        target={getLengthPercent(target)}>
+        <div className="total" />
+        <div className="target" />
+        <div className="cur" />
+      </PitchBar>
       <div>
         <h5>최고음정 : {highest}</h5>
         <h5>최저음정 : {lowest}</h5>
         <h1>
-          {target} / 최대성공 : {begin} / 목표 : {end} /
           {stage === "up"
             ? "최고 음정을 구해보겠습니다"
             : "최저 음정을 구해보겠습니다"}
           {/* {getPitchFromNote(target).noteString + getPitchFromNote(target).scale} */}
+          {target}
         </h1>
-        <button
-          onClick={() => {
-            getNextTarget(true);
-          }}>
-          성공
-        </button>
-        <button
-          onClick={() => {
-            getNextTarget(false);
-          }}>
-          실패
-        </button>
+        {stage !== "complete" && (
+          <>
+            <button
+              onClick={() => {
+                getNextTarget(true);
+              }}>
+              성공
+            </button>
+            <button
+              onClick={() => {
+                getNextTarget(false);
+              }}>
+              실패
+            </button>
+          </>
+        )}
       </div>
       {/* <div className="note-list">
         {noteSuccess.map((item, idx) => {
