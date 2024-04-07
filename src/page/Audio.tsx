@@ -4,9 +4,10 @@ import useAudio from "../hooks/useAudio";
 import styled from "styled-components";
 import { getPitchFromNote } from "../audio/utils";
 import playSound from "../audio/playSound";
+import { Link } from "react-router-dom";
 
-const HIGHEST = 73;
-const LOWEST = 38;
+export const HIGHEST = 73;
+export const LOWEST = 38;
 const MIDDLE = Math.floor((HIGHEST + LOWEST) / 2);
 
 function getLengthPercent(value: number) {
@@ -48,7 +49,6 @@ export default function Audio() {
 
   const [stage, setStage] = useState<"up" | "down" | "complete">("up");
   const [target, setTarget] = useState(MIDDLE);
-  console.log("🚀 ~ Audio ~ target:", target);
   const [begin, setBegin] = useState(MIDDLE);
   const [end, setEnd] = useState(HIGHEST);
 
@@ -158,6 +158,11 @@ export default function Audio() {
             </h2>
           )}
         </div>
+      )}
+      {stage === "complete" && (
+        <Link to={`/music?high=${highest}&low=${lowest}`}>
+          내 음역대에 맞는 노래 찾으러 가기
+        </Link>
       )}
     </div>
   );
