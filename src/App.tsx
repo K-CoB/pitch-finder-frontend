@@ -9,7 +9,9 @@ export default function App() {
       <div className="app">
         <div className="view">
           <div className="header">
-            <h1>Pitch Finder</h1>
+            <a href="/">
+              <h1>Pitch Finder</h1>
+            </a>
             <h5>
               부르기 쉬운 노래를 찾고 싶은 당신을 위한 사용자 음높이 기반 가요
               필터링 서비스
