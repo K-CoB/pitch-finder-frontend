@@ -10,7 +10,6 @@ export default function Music() {
   const musicList = Songs.filter(
     (song) => parseInt(lowLimit) < song.low && song.high < parseInt(highLimit)
   );
-  console.log("🚀 ~ Music ~ musicList:", musicList);
 
   return (
     <div>

@@ -88,6 +88,7 @@ export default function Audio() {
 
   return (
     <div>
+      <h5>주변의 소음이 적은 조용한 환경에서 측정해주세요.</h5>
       <div>
         {!started ? (
           <button
@@ -153,7 +154,7 @@ export default function Audio() {
           )}
           {lowest && (
             <h2>
-              최고음정 : {getPitchFromNote(lowest).pitch}{" "}
+              최저음정 : {getPitchFromNote(lowest).pitch}{" "}
               <button onClick={() => listenSound(lowest)}>듣기</button>
             </h2>
           )}
