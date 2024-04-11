@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import AudioContext from "../audio/context";
 import correlate from "../audio/correlate";
-import { getNoteFromFrequency, getPitchFromNote } from "../audio/utils";
+import {
+  getFrequencyFromNote,
+  getNoteFromFrequency,
+  getPitchFromNote,
+} from "../audio/utils";
 
 const audioCtx = AudioContext.getAudioContext();
 const analyser = AudioContext.getAnalyser();
@@ -20,6 +24,7 @@ export default function useAudio() {
 
     setHz(hz);
     setNote(getNoteFromFrequency(hz));
+    console.log(note);
   };
 
   useEffect(() => {
@@ -50,8 +55,13 @@ export default function useAudio() {
     source?.disconnect(analyser);
   };
 
+  const reset = (note: number) => {
+    setHz(getFrequencyFromNote(note));
+    setNote(note);
+  };
+
   return {
-    method: { start, stop },
+    method: { start, stop, reset },
     value: {
       hz,
       note,

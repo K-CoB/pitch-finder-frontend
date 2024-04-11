@@ -42,8 +42,9 @@ export default function Audio() {
 
   useEffect(() => {
     if (value.note === target) {
-      getNextTarget(true);
       alert("성공");
+      getNextTarget(true);
+      method.reset(target);
     }
   }, [value.note]);
 
@@ -55,7 +56,7 @@ export default function Audio() {
   function listenSound(note: number) {
     playSound(note);
     method.stop();
-    setTimeout(() => method.start(), 500);
+    setTimeout(() => method.start(), 600);
   }
 
   function getNextTarget(success: boolean) {
@@ -116,7 +117,9 @@ export default function Audio() {
               : "최저 음정을 구해보겠습니다 "}
             아래 음정을 따라해주세요
           </h5>
-          <h1>{getPitchFromNote(target).pitch}</h1>
+          <h1>
+            {getPitchFromNote(target).pitch}" " {target}
+          </h1>
           {stage !== "complete" && (
             <>
               <button onClick={() => listenSound(target)}>음성 듣기</button>
