@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import Songs from "../mock/songs";
 import { HIGHEST, LOWEST } from "./Audio";
+import { getPitchFromNote } from "../audio/utils";
 
 export default function Music() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,7 +22,11 @@ export default function Music() {
       <div>
         {musicList.map((music, idx) => (
           <li key={idx}>
-            {music.singer} <b>{music.title}</b>
+            {music.singer} <b>{music.title}</b>{" "}
+            <span>
+              ({getPitchFromNote(music.high).pitch} ~{" "}
+              {getPitchFromNote(music.low).pitch})
+            </span>
           </li>
         ))}
       </div>
