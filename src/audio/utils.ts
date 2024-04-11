@@ -13,6 +13,21 @@ const noteStrings = [
   "B",
 ];
 
+const korNoteStrings = [
+  "도",
+  "도#",
+  "레",
+  "레#",
+  "미",
+  "파",
+  "파#",
+  "솔",
+  "솔#",
+  "라",
+  "라#",
+  "시",
+];
+
 export const getNoteFromFrequency = (frequency: number) => {
   return Math.round(12 * Math.log2(frequency / 440) + 69);
 };
@@ -23,7 +38,9 @@ export const getFrequencyFromNote = (note: number) => {
 
 export const getPitchFromNote = (note: number) => {
   const noteString = noteStrings[note % 12];
+  const korNoteString = korNoteStrings[note % 12];
+
   const scale = Math.floor(note / 12) - 1;
 
-  return { scale, noteString, pitch: noteString + scale };
+  return { scale, noteString, korNoteString, pitch: noteString + scale };
 };

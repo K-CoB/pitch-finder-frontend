@@ -118,7 +118,9 @@ export default function Audio() {
             아래 음정을 따라해주세요
           </h5>
           <h1>
-            {getPitchFromNote(target).pitch}" " {target}
+            {getPitchFromNote(target).pitch +
+              " " +
+              getPitchFromNote(target).korNoteString}
           </h1>
           {stage !== "complete" && (
             <>
