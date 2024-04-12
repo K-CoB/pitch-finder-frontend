@@ -16,6 +16,7 @@ export default function App() {
               부르기 쉬운 노래를 찾고 싶은 당신을 위한 사용자 음높이 기반 가요
               필터링 서비스
             </h5>
+            <h3 className="team">⭐️ 그로쓰 14팀 CoB ⭐️</h3>
           </div>
           <div className="body">
             <Routes>

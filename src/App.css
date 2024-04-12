@@ -20,16 +20,7 @@
     flex: 1;
 }
 
-.note-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.note-list > .success {
-    color: blue;
-}
-
-.note-list > .false {
-    color: red;
+.team {
+    background-color: mediumspringgreen;
+    color: black;
 }
