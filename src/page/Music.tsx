@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import Songs from "../mock/songs";
-import { HIGHEST, LOWEST } from "./Audio";
+import { HIGHEST, LOWEST } from "./Test";
 import { getPitchFromNote } from "../audio/utils";
 
 export default function Music() {

@@ -1,35 +1,9 @@
-/* @tailwind base; */
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
 
 html {
-  font-family: "Ubuntu", sans-serif;
-}
-
-.app {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    box-sizing: border-box;
+    font-family: "Ubuntu", sans-serif;
     background-color: whitesmoke;
-}
-.view {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    background-color: white;
-    padding: 1rem;
-    overflow-y: auto;
-}
-.body {
-    display: flex;
-    flex: 1;
-}
-
-.team {
-    background-color: mediumspringgreen;
-    color: black;
 }

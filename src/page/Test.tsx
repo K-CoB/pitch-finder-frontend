@@ -33,7 +33,7 @@ const PitchBar = styled.div<{ cur: number; target: number }>`
   }
 `;
 
-export default function Audio() {
+export default function Test() {
   const { method, value } = useAudio();
 
   const [started, setStarted] = useState(false);
