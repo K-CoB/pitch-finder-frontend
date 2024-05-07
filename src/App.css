@@ -16,3 +16,10 @@ html {
   font-family: "NPSfontRegular", sans-serif;
   background-color: whitesmoke;
 }
+
+.bg-img {
+  background-image: url("./assets/bgBlur.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}

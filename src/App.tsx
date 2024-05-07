@@ -9,7 +9,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <html lang="kor">
-        <body className="max-w-[440px] min-h-screen m-auto bg-white p-4">
+        <body className="max-w-[440px] min-h-screen m-auto bg-white p-4 bg-img">
           <Header />
           <main>
             <Routes>
