@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <div className="mx-29">
+    <div>
       <h1 className="text-black text-[40px] font-bold font-Ubuntu">
         PitchFinder
       </h1>
