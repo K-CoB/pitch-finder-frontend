@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <div className="pb-[50px]">
+    <div>
       <h1 className="text-black text-[40px] font-bold font-Ubuntu w-full">
         PitchFinder
       </h1>

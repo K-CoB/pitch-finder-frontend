@@ -18,6 +18,11 @@ html {
 }
 
 body {
+  margin: auto;
+  min-height: 100dvh;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
   background-color: white;
   background-image: url("./assets/bgBlur.svg");
   background-size: cover;

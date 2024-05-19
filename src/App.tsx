@@ -10,7 +10,7 @@ export default function App() {
   const location = useLocation();
 
   return (
-    <div className="min-h-dvh max-w-[440px] m-auto flex-column">
+    <body>
       <div className="flex-1 p-5 grid custom-grid-template-rows">
         <Header />
         <main>
@@ -25,6 +25,6 @@ export default function App() {
       {location.pathname === "/" && (
         <img src={Bottom} alt="홈페이지 하단 이미지" />
       )}
-    </div>
+    </body>
   );
 }
