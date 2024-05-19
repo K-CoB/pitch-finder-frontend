@@ -5,6 +5,7 @@ import Music from "@/page/Music";
 import Test from "@/page/Test";
 import Header from "@/components/common/Header";
 import Bottom from "@/assets/bottom.png";
+import PrevTest from "./page/PrevTest";
 
 export default function App() {
   const location = useLocation();
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<Test />} />
             <Route path="/music" element={<Music />} />
+            <Route path="/prevTest" element={<PrevTest />} />
           </Routes>
         </main>
       </div>
