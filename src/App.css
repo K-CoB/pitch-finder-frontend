@@ -17,7 +17,8 @@ html {
   background-color: whitesmoke;
 }
 
-.bg-img {
+body {
+  background-color: white;
   background-image: url("./assets/bgBlur.svg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -33,4 +34,8 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.custom-grid-template-rows {
+  grid-template-rows: min-content auto;
 }
