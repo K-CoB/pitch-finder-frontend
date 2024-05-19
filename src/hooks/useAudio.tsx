@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import AudioContext from "../audio/context";
-import correlate from "../audio/correlate";
+import AudioContext from "@/audio/context";
+import correlate from "@/audio/correlate";
 import {
   getFrequencyFromNote,
   getNoteFromFrequency,
   getPitchFromNote,
-} from "../audio/utils";
+} from "@/audio/utils";
 
 const audioCtx = AudioContext.getAudioContext();
 const analyser = AudioContext.getAnalyser();

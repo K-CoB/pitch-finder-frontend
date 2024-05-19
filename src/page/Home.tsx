@@ -1,5 +1,5 @@
-import SelectButton from "../components/common/SelectButton";
-import MikeButton from "../components/home/MikeButton";
+import SelectButton from "@/components/common/SelectButton";
+import MikeButton from "@/components/home/MikeButton";
 
 export default function Home() {
   return (

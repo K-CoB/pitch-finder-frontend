@@ -1,4 +1,4 @@
-import { ReactComponent as MicrophoneIcon } from "../../assets/microphone.svg";
+import { ReactComponent as MicrophoneIcon } from "@/assets/microphone.svg";
 
 export default function MikeButton() {
   return (

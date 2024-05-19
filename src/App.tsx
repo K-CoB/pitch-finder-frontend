@@ -1,9 +1,9 @@
-import "./App.css";
-import Home from "./page/Home";
+import "@/App.css";
+import Home from "@/page/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Music from "./page/Music";
-import Test from "./page/Test";
-import Header from "./components/common/Header";
+import Music from "@/page/Music";
+import Test from "@/page/Test";
+import Header from "@/components/common/Header";
 
 export default function App() {
   return (

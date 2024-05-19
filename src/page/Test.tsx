@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import useAudio from "../hooks/useAudio";
+import useAudio from "@/hooks/useAudio";
 import styled from "styled-components";
-import { getPitchFromNote } from "../audio/utils";
-import playSound from "../audio/playSound";
+import { getPitchFromNote } from "@/audio/utils";
+import playSound from "@/audio/playSound";
 import { Link } from "react-router-dom";
 
 export const HIGHEST = 73;
@@ -96,7 +96,8 @@ export default function Test() {
             onClick={() => {
               method.start();
               setStarted(true);
-            }}>
+            }}
+          >
             음역대 테스트 시작
           </button>
         ) : (
@@ -104,7 +105,8 @@ export default function Test() {
             onClick={() => {
               method.stop();
               setStarted(false);
-            }}>
+            }}
+          >
             음역대 테스트 정지
           </button>
         )}
@@ -128,14 +130,16 @@ export default function Test() {
               <button
                 onClick={() => {
                   getNextTarget(false);
-                }}>
+                }}
+              >
                 실패
               </button>
             </>
           )}
           <PitchBar
             cur={getLengthPercent(value.note)}
-            target={getLengthPercent(target)}>
+            target={getLengthPercent(target)}
+          >
             <div className="total" />
             <span>목표 음정</span>
             <div className="target" />

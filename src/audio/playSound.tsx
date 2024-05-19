@@ -1,4 +1,4 @@
-import { getFrequencyFromNote } from "./utils";
+import { getFrequencyFromNote } from "@/audio/utils";
 
 const playSound = (note: number) => {
   const audioCtx = new AudioContext();
