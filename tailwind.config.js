@@ -16,6 +16,7 @@ module.exports = {
           pitch: "#A1A1FF", // 음성 듣기 및 포기하기
           "bar-1": "#D7D6FF", // 목표 음정 바
           "bar-2": "#A1C1FF", // 현재 음정 바,결과 음역대 범위 바
+          "bg-bar": "#C7D3EB",
           result: "#E1E1FA",
         },
       },

@@ -24,7 +24,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: white;
-  background-image: url("./assets/bgBlur.svg");
+  background-image: url("@/assets/bgBlur.svg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
