@@ -6,6 +6,7 @@ import Test from "@/page/Test";
 import Header from "@/components/common/Header";
 import Bottom from "@/assets/bottom.png";
 import PrevTest from "./page/PrevTest";
+import Result from "./page/Result";
 
 export default function App() {
   const location = useLocation();
@@ -18,6 +19,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<Test />} />
+            <Route path="/result" element={<Result />} />
             <Route path="/music" element={<Music />} />
             <Route path="/prevTest" element={<PrevTest />} />
           </Routes>

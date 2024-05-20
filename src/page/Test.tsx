@@ -6,6 +6,8 @@ import playSound from "@/audio/playSound";
 import { Link } from "react-router-dom";
 import SelectButton from "@/components/common/SelectButton";
 import Pitchbar from "@/components/test/Pitchbar";
+import PitchButton from "@/components/common/PitchButton";
+import ResultButton from "@/components/common/ResultButton";
 
 export const HIGHEST = 73;
 export const LOWEST = 38;
@@ -18,6 +20,7 @@ function getLengthPercent(value: number) {
 export default function Test() {
   const { method, value } = useAudio();
 
+  const [started, setStarted] = useState(true);
   const [highest, setHighest] = useState<number>();
   const [lowest, setLowest] = useState<number>();
 
@@ -69,46 +72,90 @@ export default function Test() {
   }
 
   return (
-    <div className="flex-column flex-center">
-      <div className="flex-column flex-center text-black ">
-        <h1 className="text-[65px] font-Ubuntu">
-          {getPitchFromNote(target).pitch}
-        </h1>
-        <span className="text-[24px]">
-          {getPitchFromNote(target).scale +
-            "옥타브 " +
-            getPitchFromNote(target).korNoteString}
-        </span>
-      </div>
-      {stage !== "complete" && (
-        <div className="flex gap-[11px]">
-          <SelectButton
-            onClick={() => listenSound(target)}
-            bgColor="bg-blue-pitch"
-          >
-            음성 듣기
-          </SelectButton>
-          <SelectButton
-            onClick={() => {
-              getNextTarget(false);
-            }}
-            bgColor="bg-blue-pitch"
-          >
-            포기하기
-          </SelectButton>
+    <div className="flex-column items-center h-full">
+      {stage !== "complete" ? (
+        <div className="flex-column w-full flex-1 items-center justify-evenly">
+          <div className="flex-column flex-center text-black ">
+            <h1 className="text-[65px] font-Ubuntu">
+              {getPitchFromNote(target).pitch}
+            </h1>
+            <span className="text-[24px]">
+              {getPitchFromNote(target).scale +
+                "옥타브 " +
+                getPitchFromNote(target).korNoteString}
+            </span>
+          </div>
+
+          <div className="flex gap-[11px]">
+            <SelectButton
+              onClick={() => listenSound(target)}
+              bgColor="bg-blue-pitch"
+            >
+              음성 듣기
+            </SelectButton>
+            <SelectButton
+              onClick={() => {
+                getNextTarget(false);
+              }}
+              bgColor="bg-blue-pitch"
+            >
+              포기하기
+            </SelectButton>
+          </div>
+
+          <div className="w-full flex-column gap-[30px]">
+            <Pitchbar width={100} bg="bg-blue-base">
+              범위
+            </Pitchbar>
+            <Pitchbar width={getLengthPercent(target)} bg="bg-blue-bar-1">
+              목표 음정
+            </Pitchbar>
+            <Pitchbar width={getLengthPercent(value.note)} bg="bg-blue-bar-2">
+              현재 음정
+            </Pitchbar>
+          </div>
+        </div>
+      ) : (
+        <div className="flex-1 flex-center">
+          <Link to="/result">
+            <ResultButton>측정 결과 확인하기</ResultButton>
+          </Link>
         </div>
       )}
 
-      <div className="w-full flex-column">
-        <Pitchbar width={100} bg="bg-blue-base">
-          범위
-        </Pitchbar>
-        <Pitchbar width={getLengthPercent(target)} bg="bg-blue-bar-1">
-          목표 음정
-        </Pitchbar>
-        <Pitchbar width={getLengthPercent(value.note)} bg="bg-blue-bar-2">
-          현재 음정
-        </Pitchbar>
+      <div className="flex gap-[25px]">
+        <PitchButton
+          result={highest}
+          onClick={() => {
+            highest && listenSound(highest);
+          }}
+          pitch={highest ? getPitchFromNote(highest).pitch : undefined}
+          kor={
+            highest
+              ? getPitchFromNote(highest).scale +
+                "옥타브 " +
+                getPitchFromNote(highest).korNoteString
+              : undefined
+          }
+        >
+          최고 음정
+        </PitchButton>
+        <PitchButton
+          result={lowest}
+          onClick={() => {
+            lowest && listenSound(lowest);
+          }}
+          pitch={lowest ? getPitchFromNote(lowest).pitch : undefined}
+          kor={
+            lowest
+              ? getPitchFromNote(lowest).scale +
+                "옥타브 " +
+                getPitchFromNote(lowest).korNoteString
+              : undefined
+          }
+        >
+          최저 음정
+        </PitchButton>
       </div>
     </div>
   );

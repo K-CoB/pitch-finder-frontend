@@ -9,7 +9,7 @@ export default function Pitchbar({ children, bg, width }: PitchbarProps) {
       <span className="text-center">{children}</span>
       <div
         className={`h-[26px] rounded-[5px] shadow ${bg}`}
-        style={{ width: `${width}%` }}
+        style={{ width: `${width}%`, maxWidth: "100%" }}
       ></div>
     </div>
   );
