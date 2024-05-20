@@ -117,7 +117,7 @@ export default function Test() {
         </div>
       ) : (
         <div className="flex-1 flex-center">
-          <Link to="/result">
+          <Link to="/result" state={{ highest, lowest }}>
             <ResultButton>측정 결과 확인하기</ResultButton>
           </Link>
         </div>
