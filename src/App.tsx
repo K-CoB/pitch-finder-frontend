@@ -1,25 +1,32 @@
-import "./App.css";
-import Home from "./page/Home";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Music from "./page/Music";
-import Test from "./page/Test";
-import Header from "./components/Header";
+import "@/App.css";
+import Home from "@/page/Home";
+import { Route, Routes, useLocation } from "react-router-dom";
+import Test from "@/page/Test";
+import Result from "@/page/Result";
+import Music from "@/page/Music";
+import Header from "@/components/common/Header";
+import Bottom from "@/assets/bottom.png";
 
 export default function App() {
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
-      <html lang="kor">
-        <body className="max-w-[440px] min-h-screen m-auto bg-white p-4">
-          <Header />
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/test" element={<Test />} />
-              <Route path="/music" element={<Music />} />
-            </Routes>
-          </main>
-        </body>
-      </html>
-    </BrowserRouter>
+    <body>
+      <div className="flex-1 p-5 grid custom-grid-template-rows">
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/test" element={<Test />} />
+            <Route path="/result" element={<Result />} />
+            <Route path="/music" element={<Music />} />
+          </Routes>
+        </main>
+      </div>
+
+      {location.pathname === "/" && (
+        <img src={Bottom} alt="홈페이지 하단 이미지" />
+      )}
+    </body>
   );
 }

@@ -16,3 +16,35 @@ html {
   font-family: "NPSfontRegular", sans-serif;
   background-color: whitesmoke;
 }
+
+body {
+  margin: auto;
+  min-height: 100dvh;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  background-image: url("./assets/bgBlur.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-grid-template-rows {
+  grid-template-rows: min-content auto;
+}
+
+.custom-grid-template-columns {
+  grid-template-columns: 70px auto;
+}
