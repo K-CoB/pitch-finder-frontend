@@ -13,9 +13,15 @@ export default function Music() {
   const [lowLimit, setLowLimit] = useState(low);
 
   // TODO: setHighLimit 할 떄 한계점 설정 필요
-  const musicList = Songs.filter(
-    (song) => lowLimit < song.low && song.high < highLimit
-  );
+  // const musicList = Songs.filter(
+  //   (song) => lowLimit < song.low && song.high < highLimit
+  // );
+
+  fetch(
+    "https://xtxmmbs0f3.execute-api.ap-northeast-2.amazonaws.com/prod/music?high=77&low=33"
+  )
+    .then((response) => console.log("response:", response))
+    .catch((error) => console.log("error:", error));
 
   // TODO : url 복사 기능 구현 필요
   const copyURL = async (text: string) => {
@@ -35,7 +41,7 @@ export default function Music() {
       <div className="flex justify-between my-8">
         <div>
           <h4 className="text-xl">
-            최고음정 {getPitchFromNote(high).pitch} ~ 최저음정
+            최고음정 {getPitchFromNote(high).pitch} ~ 최저음정{" "}
             {getPitchFromNote(low).pitch}
           </h4>
           <span className="text-xs text-slate-500">
@@ -44,7 +50,7 @@ export default function Music() {
         </div>
         <button
           onClick={() => copyURL("!!")}
-          className="bg-blue-base text-white rounded-xl">
+          className="bg-blue-base text-white rounded-xl p-4">
           결과 공유
         </button>
       </div>
@@ -79,14 +85,14 @@ export default function Music() {
         <span>키 더 낮게 한다면</span>
       </div>
       <div>
-        {musicList.map((music, idx) => (
+        {Songs.map((music, idx) => (
           <li
             key={idx}
             className="flex justify-between mb-4 bg-white p-2 rounded-lg">
             <section className="flex gap-2">
-              <img src="/logo192.png" className="w-12 h-12" />
+              <img src={music.image} className="w-12 h-12 rounded-md" />
               <div className="flex flex-col">
-                <span>{music.title}</span>
+                <span>{music.song}</span>
                 <span className="text-sm text-slate-500">{music.singer}</span>
               </div>
             </section>
@@ -100,8 +106,16 @@ export default function Music() {
                 </li>
               </ul>
               <ul className="ml-4 text-lg flex items-center gap-2">
-                <li className="bg-slate-200 rounded-full p-2">🎧</li>
-                <li className="bg-slate-200 rounded-full p-2">🎤</li>
+                <a
+                  className="bg-slate-200 rounded-full p-2"
+                  href={music.url.listen}>
+                  🎧
+                </a>
+                <a
+                  className="bg-slate-200 rounded-full p-2"
+                  href={music.url.sing}>
+                  🎤
+                </a>
               </ul>
             </section>
           </li>
