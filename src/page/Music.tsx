@@ -8,6 +8,7 @@ import axios, { AxiosResponse } from "axios";
 import ENV from "@/constants/env";
 
 // TODO: 빈 화면 분기처리 필요
+// TODO: 정렬 순서 처리 필요
 export default function Music() {
   const [searchParams, setSearchParams] = useSearchParams();
   const high = parseInt(searchParams.get("high") || "0") ?? HIGHEST;
@@ -22,6 +23,7 @@ export default function Music() {
     axios
       .get<SongI[]>(ENV.api, {
         params: { high: highLimit, low: lowLimit },
+        headers: { "x-api-key": ENV.api_key },
       })
       .then((response: AxiosResponse<SongI[]>) => {
         setMusicList(response.data);
@@ -66,11 +68,17 @@ export default function Music() {
             +
           </button>
           {highLimit - high}
-          <button
-            className="bg-blue-base text-white px-2 rounded-full"
-            onClick={() => setHighLimit((cur) => cur - 1)}>
-            -
-          </button>
+          {highLimit - high <= 0 ? (
+            <button className="bg-blue-highlight text-white px-2 rounded-full">
+              -
+            </button>
+          ) : (
+            <button
+              className="bg-blue-base text-white px-2 rounded-full"
+              onClick={() => setHighLimit((cur) => cur - 1)}>
+              -
+            </button>
+          )}
         </div>
         <span>키 더 높게</span>
         <div className="flex flex-col items-center">
@@ -80,11 +88,17 @@ export default function Music() {
             +
           </button>
           {low - lowLimit}
-          <button
-            className="bg-blue-base text-white px-2 rounded-full"
-            onClick={() => setLowLimit((cur) => cur + 1)}>
-            -
-          </button>
+          {low - lowLimit <= 0 ? (
+            <button className="bg-blue-highlight text-white px-2 rounded-full">
+              -
+            </button>
+          ) : (
+            <button
+              className="bg-blue-base text-white px-2 rounded-full"
+              onClick={() => setLowLimit((cur) => cur + 1)}>
+              -
+            </button>
+          )}
         </div>
         <span>키 더 낮게 한다면</span>
       </div>
