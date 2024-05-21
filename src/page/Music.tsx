@@ -2,31 +2,108 @@ import { useSearchParams } from "react-router-dom";
 import Songs from "@/mock/songs";
 import { HIGHEST, LOWEST } from "@/page/Test";
 import { getPitchFromNote } from "@/audio/utils";
+import { useEffect, useState } from "react";
 
 export default function Music() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const highLimit = searchParams.get("high") ?? HIGHEST.toString();
-  const lowLimit = searchParams.get("low") ?? LOWEST.toString();
+  const high = parseInt(searchParams.get("high") || "0") ?? HIGHEST;
+  const low = parseInt(searchParams.get("low") || "0") ?? LOWEST;
 
+  const [highLimit, setHighLimit] = useState(high);
+  const [lowLimit, setLowLimit] = useState(low);
+
+  // TODO: setHighLimit 할 떄 한계점 설정 필요
   const musicList = Songs.filter(
-    (song) => parseInt(lowLimit) < song.low && song.high < parseInt(highLimit)
+    (song) => lowLimit < song.low && song.high < highLimit
   );
 
+  // TODO : url 복사 기능 구현 필요
+  const copyURL = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("클립보드에 링크가 복사되었어요.");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    console.log(highLimit + " " + lowLimit);
+  }, [highLimit, lowLimit]);
   return (
     <div>
-      <h4>당신의 음역대에 맞는 음악들입니다!</h4>
-      <ul>
-        <li>최고 음정 : {searchParams.get("high")}</li>
-        <li>최저 음정 : {searchParams.get("low")}</li>
-      </ul>
+      <div className="flex justify-between my-8">
+        <div>
+          <h4 className="text-xl">
+            최고음정 {getPitchFromNote(high).pitch} ~ 최저음정
+            {getPitchFromNote(low).pitch}
+          </h4>
+          <span className="text-xs text-slate-500">
+            당신의 음역대에 맞는 노래를 추천해드릴게요
+          </span>
+        </div>
+        <button
+          onClick={() => copyURL("!!")}
+          className="bg-blue-base text-white rounded-xl">
+          결과 공유
+        </button>
+      </div>
+      <div className="flex justify-center items-center gap-4 my-8">
+        <div className="flex flex-col items-center">
+          <button
+            className="bg-blue-base text-white px-2 rounded-full"
+            onClick={() => setHighLimit((cur) => cur + 1)}>
+            +
+          </button>
+          {highLimit - high}
+          <button
+            className="bg-blue-base text-white px-2 rounded-full"
+            onClick={() => setHighLimit((cur) => cur - 1)}>
+            -
+          </button>
+        </div>
+        <span>키 더 높게</span>
+        <div className="flex flex-col items-center">
+          <button
+            className="bg-blue-base text-white px-2 rounded-full"
+            onClick={() => setLowLimit((cur) => cur - 1)}>
+            +
+          </button>
+          {low - lowLimit}
+          <button
+            className="bg-blue-base text-white px-2 rounded-full"
+            onClick={() => setLowLimit((cur) => cur + 1)}>
+            -
+          </button>
+        </div>
+        <span>키 더 낮게 한다면</span>
+      </div>
       <div>
         {musicList.map((music, idx) => (
-          <li key={idx}>
-            {music.singer} <b>{music.title}</b>{" "}
-            <span>
-              ({getPitchFromNote(music.high).pitch} ~{" "}
-              {getPitchFromNote(music.low).pitch})
-            </span>
+          <li
+            key={idx}
+            className="flex justify-between mb-4 bg-white p-2 rounded-lg">
+            <section className="flex gap-2">
+              <img src="/logo192.png" className="w-12 h-12" />
+              <div className="flex flex-col">
+                <span>{music.title}</span>
+                <span className="text-sm text-slate-500">{music.singer}</span>
+              </div>
+            </section>
+            <section className="flex">
+              <ul className="flex items-center gap-2">
+                <li className="bg-[#FFAE35] text-white rounded-lg px-2 text-sm">
+                  {getPitchFromNote(music.high).pitch}
+                </li>
+                <li className="bg-[#4535FF] text-white rounded-lg px-2 text-sm">
+                  {getPitchFromNote(music.low).pitch}
+                </li>
+              </ul>
+              <ul className="ml-4 text-lg flex items-center gap-2">
+                <li className="bg-slate-200 rounded-full p-2">🎧</li>
+                <li className="bg-slate-200 rounded-full p-2">🎤</li>
+              </ul>
+            </section>
           </li>
         ))}
       </div>
