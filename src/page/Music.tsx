@@ -5,7 +5,9 @@ import { getPitchFromNote } from "@/audio/utils";
 import { useEffect, useState } from "react";
 import { SongI } from "@/interface/SongI";
 import axios, { AxiosResponse } from "axios";
+import ENV from "@/constants/env";
 
+// TODO: 빈 화면 분기처리 필요
 export default function Music() {
   const [searchParams, setSearchParams] = useSearchParams();
   const high = parseInt(searchParams.get("high") || "0") ?? HIGHEST;
@@ -18,7 +20,7 @@ export default function Music() {
 
   useEffect(() => {
     axios
-      .get<SongI[]>(process.env.REACT_APP_API || "", {
+      .get<SongI[]>(ENV.api, {
         params: { high: highLimit, low: lowLimit },
       })
       .then((response: AxiosResponse<SongI[]>) => {
@@ -27,9 +29,11 @@ export default function Music() {
   }, [highLimit, lowLimit]);
 
   // TODO : url 복사 기능 구현 필요
-  const copyURL = async (text: string) => {
+  const copyURL = async () => {
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(
+        ENV.domain + `/music?high=${high}&low=${low}`
+      );
       alert("클립보드에 링크가 복사되었어요.");
     } catch (err) {
       console.log(err);
@@ -49,7 +53,7 @@ export default function Music() {
           </span>
         </div>
         <button
-          onClick={() => copyURL("!!")}
+          onClick={() => copyURL()}
           className="bg-blue-base text-white rounded-xl p-4">
           결과 공유
         </button>
