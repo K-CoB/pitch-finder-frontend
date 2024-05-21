@@ -3,6 +3,8 @@ import Songs from "@/mock/songs";
 import { HIGHEST, LOWEST } from "@/page/Test";
 import { getPitchFromNote } from "@/audio/utils";
 import { useEffect, useState } from "react";
+import { SongI } from "@/interface/SongI";
+import axios, { AxiosResponse } from "axios";
 
 export default function Music() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,16 +14,17 @@ export default function Music() {
   const [highLimit, setHighLimit] = useState(high);
   const [lowLimit, setLowLimit] = useState(low);
 
-  // TODO: setHighLimit 할 떄 한계점 설정 필요
-  // const musicList = Songs.filter(
-  //   (song) => lowLimit < song.low && song.high < highLimit
-  // );
+  const [musicList, setMusicList] = useState<SongI[]>(Songs);
 
-  fetch(
-    "https://xtxmmbs0f3.execute-api.ap-northeast-2.amazonaws.com/prod/music?high=77&low=33"
-  )
-    .then((response) => console.log("response:", response))
-    .catch((error) => console.log("error:", error));
+  useEffect(() => {
+    axios
+      .get<SongI[]>(process.env.REACT_APP_API || "", {
+        params: { high: highLimit, low: lowLimit },
+      })
+      .then((response: AxiosResponse<SongI[]>) => {
+        setMusicList(response.data);
+      });
+  }, [highLimit, lowLimit]);
 
   // TODO : url 복사 기능 구현 필요
   const copyURL = async (text: string) => {
@@ -33,9 +36,6 @@ export default function Music() {
     }
   };
 
-  useEffect(() => {
-    console.log(highLimit + " " + lowLimit);
-  }, [highLimit, lowLimit]);
   return (
     <div>
       <div className="flex justify-between my-8">
@@ -85,7 +85,7 @@ export default function Music() {
         <span>키 더 낮게 한다면</span>
       </div>
       <div>
-        {Songs.map((music, idx) => (
+        {musicList.map((music, idx) => (
           <li
             key={idx}
             className="flex justify-between mb-4 bg-white p-2 rounded-lg">
