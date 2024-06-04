@@ -6,10 +6,8 @@ import MikeButton from "@/components/home/MikeButton";
 export default function Home() {
   const [gender, setGender] = useRecoilState(genderState);
 
-  const handleSelectGender = (selectedGender: string) => {
-    setGender((prevGender) =>
-      prevGender === selectedGender ? "" : selectedGender
-    );
+  const handleSelectGender = (selectedGender: "여자" | "남자") => {
+    setGender(selectedGender);
   };
 
   return (
@@ -21,16 +19,14 @@ export default function Home() {
             onClick={() => handleSelectGender("남자")}
             bgColor={`${
               gender === "남자" ? "bg-blue-highlight" : "bg-blue-base"
-            }`}
-          >
+            }`}>
             남자
           </SelectButton>
           <SelectButton
             onClick={() => handleSelectGender("여자")}
             bgColor={`${
               gender === "여자" ? "bg-blue-highlight" : "bg-blue-base"
-            }`}
-          >
+            }`}>
             여자
           </SelectButton>
         </div>

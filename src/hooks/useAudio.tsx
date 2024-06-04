@@ -33,7 +33,7 @@ export default function useAudio() {
     }
   }, [source]);
 
-  setInterval(updatePitch, 100);
+  setInterval(updatePitch, 1);
 
   const start = async () => {
     const input = await navigator.mediaDevices.getUserMedia({
