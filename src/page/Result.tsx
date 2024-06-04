@@ -13,6 +13,30 @@ export default function Result() {
   const highest = location.state.highest;
   const lowest = location.state.lowest;
 
+  const VALUE = {
+    avg: {
+      male: { high: 54, low: 34 },
+      female: { high: 60, low: 40 },
+    },
+    lowest: 14,
+    highest: 71,
+    start: { male: 43, female: 55 },
+  };
+
+  const key = gender === "남자" ? "male" : "female";
+  const averageHigh = VALUE.avg[key].high;
+  const averageLow = VALUE.avg[key].low;
+
+  function getWidth(high: number, low: number) {
+    const ratio = ((high - low) / (VALUE.highest - VALUE.lowest)) * 100;
+    return ratio;
+  }
+
+  function getMarginLeft(low: number) {
+    const ratio = ((low - VALUE.lowest) / (VALUE.highest - VALUE.lowest)) * 100;
+    return ratio;
+  }
+
   return (
     <div className="flex-column items-center h-full justify-between">
       <div className="flex-column items-center gap-[20px] pt-[25px]">
@@ -48,8 +72,16 @@ export default function Result() {
       </div>
 
       <div className="flex-column gap-[40px] self-start w-full px-[15px]">
-        <ResultBar>{`${gender} 평균 음역대`}</ResultBar>
-        <ResultBar>내 음역대</ResultBar>
+        <ResultBar
+          width={getWidth(averageHigh, averageLow)}
+          marginLeft={getMarginLeft(averageLow)}
+        >{`${gender} 평균 음역대`}</ResultBar>
+        <ResultBar
+          width={getWidth(highest, lowest)}
+          marginLeft={getMarginLeft(lowest)}
+        >
+          내 음역대
+        </ResultBar>
       </div>
 
       <Link to={`/music?high=${highest}&low=${lowest}`}>
