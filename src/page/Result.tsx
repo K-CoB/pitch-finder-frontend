@@ -5,6 +5,7 @@ import { getPitchFromNote } from "@/audio/utils";
 import PitchButton from "@/components/common/PitchButton";
 import ResultButton from "@/components/common/ResultButton";
 import ResultBar from "@/components/result/ResultBar";
+import VALUE from "@/constants/value";
 
 export default function Result() {
   const [gender, setGender] = useRecoilState(genderState);
@@ -12,16 +13,6 @@ export default function Result() {
   const location = useLocation();
   const highest = location.state.highest;
   const lowest = location.state.lowest;
-
-  const VALUE = {
-    avg: {
-      male: { high: 54, low: 34 },
-      female: { high: 60, low: 40 },
-    },
-    lowest: 14,
-    highest: 71,
-    start: { male: 43, female: 55 },
-  };
 
   const key = gender === "남자" ? "male" : "female";
   const averageHigh = VALUE.avg[key].high;
