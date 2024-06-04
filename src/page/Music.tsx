@@ -1,18 +1,18 @@
 import { useSearchParams } from "react-router-dom";
 import Songs from "@/mock/songs";
-import { HIGHEST, LOWEST } from "@/page/Test";
 import { getPitchFromNote } from "@/audio/utils";
 import { useEffect, useState } from "react";
 import { SongI } from "@/interface/SongI";
 import axios, { AxiosResponse } from "axios";
 import ENV from "@/constants/env";
+import VALUE from "@/constants/value";
 
 // TODO: 빈 화면 분기처리 필요
 // TODO: 정렬 순서 처리 필요
 export default function Music() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const high = parseInt(searchParams.get("high") || "0") ?? HIGHEST;
-  const low = parseInt(searchParams.get("low") || "0") ?? LOWEST;
+  const high = parseInt(searchParams.get("high") || "0") ?? VALUE.highest;
+  const low = parseInt(searchParams.get("low") || "0") ?? VALUE.lowest;
 
   const [highLimit, setHighLimit] = useState(high);
   const [lowLimit, setLowLimit] = useState(low);

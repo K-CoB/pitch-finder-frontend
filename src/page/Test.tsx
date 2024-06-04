@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
 
 import useAudio from "@/hooks/useAudio";
-import { getPitchFromNote } from "@/audio/utils";
+import { getNoteFromFrequency, getPitchFromNote } from "@/audio/utils";
 import playSound from "@/audio/playSound";
 import { Link } from "react-router-dom";
 import SelectButton from "@/components/common/SelectButton";
 import Pitchbar from "@/components/test/Pitchbar";
 import PitchButton from "@/components/common/PitchButton";
 import ResultButton from "@/components/common/ResultButton";
-
-export const HIGHEST = 73;
-export const LOWEST = 38;
-const MIDDLE = Math.floor((HIGHEST + LOWEST) / 2);
-
-function getLengthPercent(value: number) {
-  return ((value - LOWEST) / (HIGHEST - LOWEST)) * 100;
-}
+import VALUE from "@/constants/value";
+import { useRecoilState } from "recoil";
+import { genderState } from "@/store/atom";
 
 export default function Test() {
   const { method, value } = useAudio();
+  const [gender, setGender] = useRecoilState(genderState);
+  const MIDDLE = gender === "남자" ? VALUE.start.male : VALUE.start.female;
 
   const [started, setStarted] = useState(true);
   const [highest, setHighest] = useState<number>();
@@ -35,7 +32,7 @@ export default function Test() {
   const [stage, setStage] = useState<"up" | "down" | "complete">("up");
   const [target, setTarget] = useState(MIDDLE);
   const [begin, setBegin] = useState(MIDDLE);
-  const [end, setEnd] = useState(HIGHEST);
+  const [end, setEnd] = useState(VALUE.highest);
 
   function listenSound(note: number) {
     playSound(note);
@@ -61,7 +58,7 @@ export default function Test() {
         setStage("down");
         setTarget(MIDDLE);
         setBegin(MIDDLE);
-        setEnd(LOWEST);
+        setEnd(VALUE.lowest);
       } else if (stage === "down") {
         setLowest(result);
         setStage("complete");
@@ -69,6 +66,10 @@ export default function Test() {
       return;
     }
     setTarget(next);
+  }
+
+  function getLengthPercent(value: number) {
+    return ((value - VALUE.lowest) / (VALUE.highest - VALUE.lowest)) * 100;
   }
 
   return (
@@ -80,7 +81,7 @@ export default function Test() {
               {getPitchFromNote(target).pitch}
             </h1>
             <span className="text-[24px]">
-              {getPitchFromNote(target).scale +
+              {getPitchFromNote(target).octave +
                 "옥타브 " +
                 getPitchFromNote(target).korNoteString}
             </span>
@@ -89,16 +90,14 @@ export default function Test() {
           <div className="flex gap-[11px]">
             <SelectButton
               onClick={() => listenSound(target)}
-              bgColor="bg-blue-pitch"
-            >
+              bgColor="bg-blue-pitch">
               음성 듣기
             </SelectButton>
             <SelectButton
               onClick={() => {
                 getNextTarget(false);
               }}
-              bgColor="bg-blue-pitch"
-            >
+              bgColor="bg-blue-pitch">
               포기하기
             </SelectButton>
           </div>
@@ -136,8 +135,7 @@ export default function Test() {
                 "옥타브 " +
                 getPitchFromNote(highest).korNoteString
               : undefined
-          }
-        >
+          }>
           최고 음정
         </PitchButton>
         <PitchButton
@@ -152,8 +150,7 @@ export default function Test() {
                 "옥타브 " +
                 getPitchFromNote(lowest).korNoteString
               : undefined
-          }
-        >
+          }>
           최저 음정
         </PitchButton>
       </div>
