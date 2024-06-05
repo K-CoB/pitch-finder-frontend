@@ -38,7 +38,7 @@ export default function Result() {
             pitch={highest ? getPitchFromNote(highest).pitch : undefined}
             kor={
               highest
-                ? getPitchFromNote(highest).scale +
+                ? getPitchFromNote(highest).octave +
                   "옥타브 " +
                   getPitchFromNote(highest).korNoteString
                 : undefined
@@ -51,7 +51,7 @@ export default function Result() {
             pitch={lowest ? getPitchFromNote(lowest).pitch : undefined}
             kor={
               lowest
-                ? getPitchFromNote(lowest).scale +
+                ? getPitchFromNote(lowest).octave +
                   "옥타브 " +
                   getPitchFromNote(lowest).korNoteString
                 : undefined

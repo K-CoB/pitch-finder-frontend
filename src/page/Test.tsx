@@ -90,14 +90,16 @@ export default function Test() {
           <div className="flex gap-[11px]">
             <SelectButton
               onClick={() => listenSound(target)}
-              bgColor="bg-blue-pitch">
+              bgColor="bg-blue-pitch"
+            >
               음성 듣기
             </SelectButton>
             <SelectButton
               onClick={() => {
                 getNextTarget(false);
               }}
-              bgColor="bg-blue-pitch">
+              bgColor="bg-blue-pitch"
+            >
               포기하기
             </SelectButton>
           </div>
@@ -131,11 +133,12 @@ export default function Test() {
           pitch={highest ? getPitchFromNote(highest).pitch : undefined}
           kor={
             highest
-              ? getPitchFromNote(highest).scale +
+              ? getPitchFromNote(highest).octave +
                 "옥타브 " +
                 getPitchFromNote(highest).korNoteString
               : undefined
-          }>
+          }
+        >
           최고 음정
         </PitchButton>
         <PitchButton
@@ -146,11 +149,12 @@ export default function Test() {
           pitch={lowest ? getPitchFromNote(lowest).pitch : undefined}
           kor={
             lowest
-              ? getPitchFromNote(lowest).scale +
+              ? getPitchFromNote(lowest).octave +
                 "옥타브 " +
                 getPitchFromNote(lowest).korNoteString
               : undefined
-          }>
+          }
+        >
           최저 음정
         </PitchButton>
       </div>
