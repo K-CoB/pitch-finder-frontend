@@ -9,14 +9,21 @@ import VALUE from "@/constants/value";
 
 export default function Result() {
   const [gender, setGender] = useRecoilState(genderState);
+  const oppGender = gender === "남자" ? "여자" : "남자";
 
   const location = useLocation();
   const highest = location.state.highest;
   const lowest = location.state.lowest;
 
-  const key = gender === "남자" ? "male" : "female";
-  const averageHigh = VALUE.avg[key].high;
-  const averageLow = VALUE.avg[key].low;
+  function getAverageByGender(genderParam: string) {
+    const key = genderParam === "남자" ? "male" : "female";
+    const averageHigh = VALUE.avg[key].high;
+    const averageLow = VALUE.avg[key].low;
+    return {
+      high: averageHigh,
+      low: averageLow,
+    };
+  }
 
   function getWidth(high: number, low: number) {
     const ratio = ((high - low) / (VALUE.highest - VALUE.lowest)) * 100;
@@ -38,7 +45,7 @@ export default function Result() {
             pitch={highest ? getPitchFromNote(highest).pitch : undefined}
             kor={
               highest
-                ? getPitchFromNote(highest).scale +
+                ? getPitchFromNote(highest).octave +
                   "옥타브 " +
                   getPitchFromNote(highest).korNoteString
                 : undefined
@@ -51,7 +58,7 @@ export default function Result() {
             pitch={lowest ? getPitchFromNote(lowest).pitch : undefined}
             kor={
               lowest
-                ? getPitchFromNote(lowest).scale +
+                ? getPitchFromNote(lowest).octave +
                   "옥타브 " +
                   getPitchFromNote(lowest).korNoteString
                 : undefined
@@ -64,14 +71,40 @@ export default function Result() {
 
       <div className="flex-column gap-[40px] self-start w-full px-[15px]">
         <ResultBar
-          width={getWidth(averageHigh, averageLow)}
-          marginLeft={getMarginLeft(averageLow)}
-        >{`${gender} 평균 음역대`}</ResultBar>
+          width={getWidth(
+            getAverageByGender(gender).high,
+            getAverageByGender(gender).low
+          )}
+          marginLeft={getMarginLeft(getAverageByGender(gender).low)}
+          average={{
+            high: getPitchFromNote(getAverageByGender(gender).high).pitch,
+            low: getPitchFromNote(getAverageByGender(gender).low).pitch,
+          }}
+        >
+          {`${gender} 평균 음역대`}
+        </ResultBar>
         <ResultBar
           width={getWidth(highest, lowest)}
           marginLeft={getMarginLeft(lowest)}
+          average={{
+            high: getPitchFromNote(highest).pitch,
+            low: getPitchFromNote(lowest).pitch,
+          }}
         >
           내 음역대
+        </ResultBar>
+        <ResultBar
+          width={getWidth(
+            getAverageByGender(oppGender).high,
+            getAverageByGender(oppGender).low
+          )}
+          marginLeft={getMarginLeft(getAverageByGender(oppGender).low)}
+          average={{
+            high: getPitchFromNote(getAverageByGender(oppGender).high).pitch,
+            low: getPitchFromNote(getAverageByGender(oppGender).low).pitch,
+          }}
+        >
+          {`${oppGender} 평균 음역대`}
         </ResultBar>
       </div>
 
