@@ -15,7 +15,7 @@ import { genderState } from "@/store/atom";
 export default function Test() {
   const { method, value } = useAudio();
   const [gender, setGender] = useRecoilState(genderState);
-  const MIDDLE = gender === "남자" ? VALUE.start.male : VALUE.start.female;
+  const MIDDLE = gender === "남자" ? VALUE.avg.male.mid : VALUE.avg.female.mid;
 
   const [started, setStarted] = useState(true);
   const [highest, setHighest] = useState<number>();
@@ -90,16 +90,14 @@ export default function Test() {
           <div className="flex gap-[11px]">
             <SelectButton
               onClick={() => listenSound(target)}
-              bgColor="bg-blue-pitch"
-            >
+              bgColor="bg-blue-pitch">
               음성 듣기
             </SelectButton>
             <SelectButton
               onClick={() => {
                 getNextTarget(false);
               }}
-              bgColor="bg-blue-pitch"
-            >
+              bgColor="bg-blue-pitch">
               포기하기
             </SelectButton>
           </div>
@@ -137,8 +135,7 @@ export default function Test() {
                 "옥타브 " +
                 getPitchFromNote(highest).korNoteString
               : undefined
-          }
-        >
+          }>
           최고 음정
         </PitchButton>
         <PitchButton
@@ -153,8 +150,7 @@ export default function Test() {
                 "옥타브 " +
                 getPitchFromNote(lowest).korNoteString
               : undefined
-          }
-        >
+          }>
           최저 음정
         </PitchButton>
       </div>

@@ -1,11 +1,10 @@
 const VALUE = {
   avg: {
-    male: { high: 54, low: 34 },
-    female: { high: 60, low: 40 },
+    male: { high: 54, low: 34, mid: 47 },
+    female: { high: 72, low: 45, mid: 56 },
   },
-  lowest: 14,
-  highest: 83,
-  start: { male: 43, female: 57 },
+  lowest: 16,
+  highest: 87,
 };
 
 export default VALUE;

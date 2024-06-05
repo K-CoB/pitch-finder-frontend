@@ -38,7 +38,7 @@ export const getFrequencyFromNote = (note: number) => {
 
 export const getPitchFromNote = (note: number) => {
   const noteString = noteStrings[note % 12]; // C3의 C
-  const scale = Math.floor(note / 12); // C3의 3
+  const scale = Math.floor(note / 12) - 1; // C3의 3
   const korNoteString = korNoteStrings[note % 12]; // C3의 '도'
   const octave = scale - 2;
 
