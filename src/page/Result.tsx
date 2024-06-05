@@ -66,7 +66,13 @@ export default function Result() {
         <ResultBar
           width={getWidth(averageHigh, averageLow)}
           marginLeft={getMarginLeft(averageLow)}
-        >{`${gender} 평균 음역대`}</ResultBar>
+          average={{
+            high: getPitchFromNote(averageHigh).pitch,
+            low: getPitchFromNote(averageLow).pitch,
+          }}
+        >
+          {`${gender} 평균 음역대`}
+        </ResultBar>
         <ResultBar
           width={getWidth(highest, lowest)}
           marginLeft={getMarginLeft(lowest)}
