@@ -23,7 +23,6 @@ export default function App() {
           </Routes>
         </main>
       </div>
-
       {location.pathname === "/" && (
         <img src={Bottom} alt="홈페이지 하단 이미지" />
       )}
